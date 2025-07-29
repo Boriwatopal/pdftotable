@@ -21,7 +21,7 @@ if not api_key:
 client = OpenAI(api_key=api_key)
 
 app = Flask(__name__)
-app.secret_key = 'supersecretkey'
+app.secret_key = os.getenv('FLASK_SECRET_KEY', 'dev-key-change-in-production')
 UPLOAD_FOLDER = 'uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
@@ -380,4 +380,5 @@ def test():
         return f'Error: {str(e)}<br><pre>{traceback.format_exc()}</pre>'
 
 if __name__ == '__main__':
-    app.run(debug=True) 
+    port = int(os.getenv('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=False) 
